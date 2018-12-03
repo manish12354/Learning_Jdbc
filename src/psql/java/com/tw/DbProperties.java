@@ -13,7 +13,7 @@ public class DbProperties {
 
     private DbProperties(){
         props = new Properties();
-        try (InputStream is = new FileInputStream(System.getProperty("webAppDB"))) {
+        try (InputStream is = new FileInputStream("/Users/manishy/my_projects/learning_spark/src/psql/resources/config.property")) {
             props.load(is);
         } catch (IOException ex) {
             throw new RuntimeException(ex);

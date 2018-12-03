@@ -62,3 +62,7 @@ sa_LibPath=${sa_SubworkflowPath}/lib
 sa_TableBasePath=${sa_BasePath}/tables
 sa_RawBasePath=${sa_BasePath}/raw
 oozie.wf.application.path=@NAME_NODE@${sa_BasePath}/${sa_WorkflowDirName}/data-prep.xml
+
+WEBAPP_DB_CONNECTION_STRING = jdbc:postgresql://localhost/manishy
+WEBAPP_DB_USER = manishy
+WEBAPP_DB_PASSWORD = gplmanish1713@

@@ -2,22 +2,23 @@ package com.tw;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class TableManager {
-    public static final String CONFIGURATION = "configuration";
+    public static final String CONFIGS = "configuration";
     private static final String jdbcDriverClassName = "org.postgresql.Driver";
 
-    private static String INSERT_SQL = "INSERT INTO " + CONFIGURATION + " (id, config_key, config_value) VALUES (? , ?, ?)";
+    private static final String DROP_SQL = "DROP TABLE IF EXISTS "+CONFIGS+" CASCADE;";
+    private static String CREATE_SQL = "CREATE TABLE "+ CONFIGS + " (id INT, config_key VARCHAR, config_value VARCHAR)";
+    private static String INSERT_SQL = "INSERT INTO " + CONFIGS + " (id, config_key, config_value) VALUES (? , ?, ?)";
 
-    private static String DELETE_SQL = "DELETE FROM " + CONFIGURATION + " WHERE CONFIG_KEY LIKE 'sa\\_%'";
+    private static String DELETE_SQL = "DELETE FROM " + CONFIGS + " WHERE CONFIG_KEY LIKE 'sa\\_%'";
 
-    public TableManager() throws ClassNotFoundException {
-        Class.forName(jdbcDriverClassName);
+    public TableManager() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class.forName(jdbcDriverClassName).newInstance();
     }
+
 
     public static void main(String[] args) throws Exception {
         String oozieWorkflowPropertiesPath = "/Users/manishy/my_projects/learning_spark/src/psql/resources/config.property";
@@ -41,6 +42,8 @@ public class TableManager {
         try {
             conn = DbConnections.create();
             statement = conn.createStatement();
+            statement.executeUpdate(DROP_SQL);
+            statement.executeUpdate(CREATE_SQL);
             preparedStatement = conn.prepareStatement(INSERT_SQL);
             statement.executeUpdate(DELETE_SQL);
             int id =500;
@@ -71,5 +74,3 @@ public class TableManager {
         }
     }
 }
-
-
